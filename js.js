@@ -1,5 +1,5 @@
 let songIndex = 0;
-let audioElement = new Audio("songs/REVENGE.mp3")
+let audioElement = new Audio("songs/1.mp3")
 let masterplay = document.getElementById("masterplay")
 let myprogressbar = document.getElementById("myprogressbar")
 let songItems= Array.from(document.getElementsByClassName("songItem"));
@@ -50,14 +50,24 @@ myprogressbar.addEventListener("change",()=>{
 
 
 Array.from(document.getElementsByClassName("songItemPlay")).forEach((element)=>{
-    element.addEventListener("click",(e)=>{
+    element.addEventListener("click",function(e){
         makeAllPlays()
         songIndex = parseInt (e.target.id);
+        if (audioElement.currentSrc.slice(-5,-4) == `${songIndex+1}`){
+            e.target.classList.remove("fa-circle-play");
+            e.target.classList.add("fa-circle-pause");
+            return
+        }
         e.target.classList.remove("fa-circle-play");
         e.target.classList.add("fa-circle-pause");
-        audioElement.scr = `songs/${songIndex+1}.mp3`;
+        audioElement.pause();
         audioElement.currentTime = 0;
+        audioElement.setAttribute("src",`songs/${songIndex+1}.mp3`);
+        audioElement.load();
         audioElement.play();
+        console.log(audioElement);
+        console.log("src",audioElement.src);
+        console.log("current src",audioElement.currentSrc);
         masterplay.classList.remove("fa-circle-play")
         masterplay.classList.add("fa-circle-pause")  
     })
